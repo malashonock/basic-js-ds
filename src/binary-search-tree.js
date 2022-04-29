@@ -95,6 +95,7 @@ class BinarySearchTree {
 
     while (node) {
       min = node.data;
+
       // Go to the left child, which is always less that current node
       node = node.left;
     }
@@ -103,8 +104,19 @@ class BinarySearchTree {
   }
 
   max() {
-    throw new NotImplementedError("Not implemented");
-    // remove line with error and write your code here
+    let node = this.#root;
+    let max = node.data;
+
+    while (node) {
+      if (node.data > max) {
+        max = node.data;
+      }
+
+      // Go to the right child
+      node = node.right;
+    }
+
+    return max;
   }
 }
 
@@ -122,6 +134,7 @@ tree.find(8);
 tree.has(7);
 tree.find(7);
 tree.min();
+tree.max();
 tree.remove(6);
 tree.remove(2);
 
