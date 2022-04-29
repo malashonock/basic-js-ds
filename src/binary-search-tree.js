@@ -42,9 +42,25 @@ class BinarySearchTree {
     }
   }
 
-  has(/* data */) {
-    throw new NotImplementedError("Not implemented");
-    // remove line with error and write your code here
+  has(data) {
+    let node = this.#root;
+
+    while (node) {
+      if (data === node.data) {
+        return true;
+      }
+
+      // Go down the tree
+      if (data < node.data) {
+        // Go to the left child
+        node = node.left;
+      } else {
+        // Go to the right child
+        node = node.right;
+      }
+    }
+
+    return false;
   }
 
   find(/* data */) {
@@ -77,6 +93,8 @@ tree.add(6);
 tree.add(8);
 tree.add(31);
 tree.add(1);
+tree.has(8);
+tree.has(7);
 tree.remove(6);
 tree.remove(2);
 
