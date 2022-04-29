@@ -8,6 +8,12 @@ const { Node } = require("../extensions/list-tree.js");
 class BinarySearchTree {
   #root = null;
 
+  constructor(node) {
+    if (node) {
+      this.#root = node;
+    }
+  }
+
   root() {
     return this.#root;
   }
@@ -84,9 +90,58 @@ class BinarySearchTree {
     return null;
   }
 
-  remove(/* data */) {
-    throw new NotImplementedError("Not implemented");
-    // remove line with error and write your code here
+  remove(data) {
+    // (1) Find the node to remove and save reference to its parent
+    let node = this.#root;
+    let parent = null;
+    let nodeToRemove;
+
+    while (node) {
+      if (data === node.data) {
+        nodeToRemove = node;
+        break;
+      }
+
+      parent = node;
+
+      // Go down the tree
+      if (data < node.data) {
+        // Go to the left child
+        node = node.left;
+      } else {
+        // Go to the right child
+        node = node.right;
+      }
+    }
+
+    if (!nodeToRemove) {
+      return;
+    }
+
+    // (2) Construct binary search trees from left and right branches of the node being removed
+    let left = new BinarySearchTree(node.left);
+    const right = new BinarySearchTree(node.right);
+
+    // (3) Find the rightmost node of the left branch
+    let rightmostOfLeft = left.find(left.max());
+
+    // (4) Append right branch to the rightmost node of the left branch, if any
+    if (left.root()) {
+      rightmostOfLeft.right = right.root();
+    } else {
+      left = right;
+    }
+
+    // (5.1) If the node being removed is the right node of its parent, make the left branch the right node of the parent, if any
+    if (parent && parent.data < nodeToRemove.data) {
+      parent.right = left.root();
+    }
+
+    // (5.2) If the node being removed is the left node of its parent, make the right node of the parent the right node of the rightmost node of the left branch
+    if (parent && parent.data > nodeToRemove.data) {
+      rightmostOfLeft = left.find(left.max());
+      rightmostOfLeft.right = parent.right;
+    }
   }
 
   min() {
@@ -105,12 +160,10 @@ class BinarySearchTree {
 
   max() {
     let node = this.#root;
-    let max = node.data;
+    let max;
 
     while (node) {
-      if (node.data > max) {
-        max = node.data;
-      }
+      max = node.data;
 
       // Go to the right child
       node = node.right;
