@@ -90,8 +90,16 @@ class BinarySearchTree {
   }
 
   min() {
-    throw new NotImplementedError("Not implemented");
-    // remove line with error and write your code here
+    let node = this.#root;
+    let min;
+
+    while (node) {
+      min = node.data;
+      // Go to the left child, which is always less that current node
+      node = node.left;
+    }
+
+    return min;
   }
 
   max() {
@@ -113,6 +121,7 @@ tree.has(8);
 tree.find(8);
 tree.has(7);
 tree.find(7);
+tree.min();
 tree.remove(6);
 tree.remove(2);
 
