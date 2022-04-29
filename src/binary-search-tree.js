@@ -132,15 +132,15 @@ class BinarySearchTree {
       left = right;
     }
 
-    // (5.1) If the node being removed is the right node of its parent, make the left branch the right node of the parent, if any
     if (parent && parent.data < nodeToRemove.data) {
+      // If the node being removed is the right node of its parent, make the left branch the right node of the parent
       parent.right = left.root();
-    }
-
-    // (5.2) If the node being removed is the left node of its parent, make the right node of the parent the right node of the rightmost node of the left branch
-    if (parent && parent.data > nodeToRemove.data) {
-      rightmostOfLeft = left.find(left.max());
-      rightmostOfLeft.right = parent.right;
+    } else if (parent && parent.data > nodeToRemove.data) {
+      // If the node being removed is the left node of its parent, make the left branch the left node of the parent
+      parent.left = left.root();
+    } else {
+      // If there is no parent, replace root with left branch
+      this.#root = left.root();
     }
   }
 
@@ -176,20 +176,25 @@ class BinarySearchTree {
 const tree = new BinarySearchTree();
 tree.add(9);
 tree.add(14);
-tree.add(54);
 tree.add(2);
 tree.add(6);
+tree.add(128);
 tree.add(8);
 tree.add(31);
+tree.add(54);
 tree.add(1);
-tree.has(8);
-tree.find(8);
-tree.has(7);
-tree.find(7);
-tree.min();
-tree.max();
-tree.remove(6);
-tree.remove(2);
+tree.remove(14);
+tree.remove(8);
+tree.remove(9);
+tree.has(14) === false;
+tree.has(8) === false;
+tree.has(9) === false;
+tree.has(2) === true;
+tree.has(6) === true;
+tree.has(128) === true;
+tree.has(31) === true;
+tree.has(54) === true;
+tree.has(1) === true;
 
 module.exports = {
   BinarySearchTree,
